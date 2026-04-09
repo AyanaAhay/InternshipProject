@@ -1,0 +1,63 @@
+# .NET specific
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.usertasks
+*.lock.json
+*.sln.ide
+*.swx
+*.swp
+*.cache
+*.cachefile
+*.CodeLens
+*.log
+*.vs/
+*.vssettings2.json
+*.dotcover
+*.coverage
+*.coveragexml
+*.coveragexml
+*.trx
+*.TestResults
+*.testsettings
+*.runsettings
+*.psess
+*.vsp
+*.vspx
+*.vspscc
+*.vssscc
+build/
+packages/
+*.nupkg
+*.snupkg
+# NuGet
+*.nupkg
+*.snupkg
+nuget.exe
+# dotenv
+.env
+.env.*
+!.env.example
+# User secrets
+secrets.json
+appsettings.Development.json
+appsettings.Production.json
+# SQLite databases
+*.db
+*.sqlite
+*.sqlite3
+# Publishing
+publish/
+# IDE
+.vscode/
+.idea/
+*.sln.iml
+# Docker
+docker-compose*.override.yml
+.dockerignore
+# Backup files
+*.bak
+*~
+*.orig
