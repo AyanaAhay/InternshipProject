@@ -2,31 +2,23 @@ using System.ComponentModel.DataAnnotations;
 
 namespace StudentApi.DTOs;
 
-// DTO для создания заявки студента
 public class CreateApplicationDto
 {
     [Required]
-    public int IdStudent { get; set; }  // ID студента, создающего заявку
+    public int IdStudent { get; set; }
 
-    //public int? IdScheduledPractice { get; set; }  // Пока опционально
-
-    //public int? IdPracticeType { get; set; }
-
-    //public int? IdSpecialization { get; set; }
-
-    // Сделать поля обязательными (были nullable)
-    [Required]
+    [Required]  // ← было int?, стало int
     public int IdScheduledPractice { get; set; }
 
-    [Required]
+    [Required]  // ← было int?, стало int
     public int IdPracticeType { get; set; }
 
-    [Required]
+    [Required]  // ← было int?, стало int
     public int IdSpecialization { get; set; }
 
     [Required]
-    public DateTime StartDate { get; set; }  // Желаемая дата начала
+    public DateTime StartDate { get; set; }
 
     [Required]
-    public DateTime EndDate { get; set; }  // Желаемая дата окончания
+    public DateTime EndDate { get; set; }
 }

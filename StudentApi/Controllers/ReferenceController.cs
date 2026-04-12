@@ -8,24 +8,42 @@ namespace StudentApi.Controllers;
 public class ReferenceController : ControllerBase
 {
     private readonly ManagerDataService _managerDataService;
+    private readonly ILogger<ReferenceController> _logger;
 
-    public ReferenceController(ManagerDataService managerDataService)
+    public ReferenceController(ManagerDataService managerDataService, ILogger<ReferenceController> logger)
     {
         _managerDataService = managerDataService;
+        _logger = logger;
     }
 
     [HttpGet("practicetypes")]
     public async Task<IActionResult> GetPracticeTypes()
     {
-        var types = await _managerDataService.GetPracticeTypesAsync();
-        return Ok(types);
+        try
+        {
+            var types = await _managerDataService.GetPracticeTypesAsync();
+            return Ok(types);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting practice types");
+            return StatusCode(500, new { message = "Ошибка при получении типов практик" });
+        }
     }
 
     [HttpGet("specializations")]
     public async Task<IActionResult> GetSpecializations()
     {
-        var specs = await _managerDataService.GetSpecializationsAsync();
-        return Ok(specs);
+        try
+        {
+            var specs = await _managerDataService.GetSpecializationsAsync();
+            return Ok(specs);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting specializations");
+            return StatusCode(500, new { message = "Ошибка при получении специализаций" });
+        }
     }
 
     [HttpGet("scheduledpractices")]
@@ -33,7 +51,15 @@ public class ReferenceController : ControllerBase
         [FromQuery] int? practiceTypeId,
         [FromQuery] int? specializationId)
     {
-        var practices = await _managerDataService.GetScheduledPracticesAsync(practiceTypeId, specializationId);
-        return Ok(practices);
+        try
+        {
+            var practices = await _managerDataService.GetScheduledPracticesAsync(practiceTypeId, specializationId);
+            return Ok(practices);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error getting scheduled practices");
+            return StatusCode(500, new { message = "Ошибка при получении запланированных практик" });
+        }
     }
 }

@@ -4,58 +4,71 @@ using StudentApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Добавляем контроллеры в приложение
+// Добавляем контроллеры
 builder.Services.AddControllers();
-
-// НАСТРОЙКА SWAGGER (добавлен правильный пакет)
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();  // Теперь эта строка работает
+builder.Services.AddSwaggerGen();
 
-// НАСТРОЙКА ПОДКЛЮЧЕНИЯ К БАЗЕ ДАННЫХ POSTGRESQL
+// Настройка логирования
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+// Настройка подключения к БД
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-// Добавляем DbContext в приложение
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(connectionString));  // Используем PostgreSQL
+    options.UseNpgsql(connectionString));
 
-// Регистрируем сервисы
+// Регистрация сервисов
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<ApplicationService>();
-
-// Регистрация HTTP клиента для ManagerApi
-builder.Services.AddHttpClient<ManagerApiClient>(client =>
-{
-    client.BaseAddress = new Uri(builder.Configuration["ManagerApi:BaseUrl"] ?? "http://localhost:5228");
-    client.Timeout = TimeSpan.FromSeconds(30);
-});
-
 builder.Services.AddScoped<ManagerDataService>();
 
-// Разрешаем CORS
+// Настройка HTTP клиента для Manager API
+// ИЗМЕНЕНО: читаем из секции "Services"
+var managerApiBaseUrl = builder.Configuration["Services:ManagerApi"] ?? "http://localhost:5001";
+var timeoutSeconds = 30;
+
+Console.WriteLine($"[CONFIG] Manager API URL: {managerApiBaseUrl}");
+
+builder.Services.AddHttpClient<ManagerApiClient>(client =>
+{
+    client.BaseAddress = new Uri(managerApiBaseUrl);
+    client.Timeout = TimeSpan.FromSeconds(timeoutSeconds);
+    client.DefaultRequestHeaders.Add("Accept", "application/json");
+    client.DefaultRequestHeaders.Add("User-Agent", "StudentApi/1.0");
+});
+
+// Настройка CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowVueApp", policy =>
     {
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5174")
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
 var app = builder.Build();
 
-// НАСТРОЙКА SWAGGER (теперь работает)
-if (app.Environment.IsDevelopment())
+// Включаем Swagger
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Student API V1");
+    c.RoutePrefix = "swagger";
+});
 
-// АВТОМАТИЧЕСКОЕ СОЗДАНИЕ БАЗЫ ДАННЫХ
+// Автоматическое создание БД
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    dbContext.Database.EnsureCreated();
+    await dbContext.Database.EnsureCreatedAsync();
+
+    var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+    logger.LogInformation($"Student API started. Manager API URL: {managerApiBaseUrl}");
 }
 
 app.UseCors("AllowVueApp");
