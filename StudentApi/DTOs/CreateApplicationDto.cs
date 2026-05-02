@@ -7,13 +7,17 @@ public class CreateApplicationDto
     [Required]
     public int IdStudent { get; set; }
 
-    [Required]  // ← было int?, стало int
-    public int IdScheduledPractice { get; set; }
+    // НОВОЕ: можно прикрепить существующую анкету
+    public int? IdQuestionnaire { get; set; }
 
-    [Required]  // ← было int?, стало int
+    // Необязательное — студент может не выбирать из расписания
+    //[Required]
+    public int? IdScheduledPractice { get; set; }
+
+    [Required]
     public int IdPracticeType { get; set; }
 
-    [Required]  // ← было int?, стало int
+    [Required]
     public int IdSpecialization { get; set; }
 
     [Required]

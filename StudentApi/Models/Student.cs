@@ -3,57 +3,62 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace StudentApi.Models;
 
-// Класс Student представляет студента в системе
-// [Table("Student")] - указываем имя таблицы в БД
+/// <summary>
+/// Модель студента.
+/// Связи:
+/// - Student (1) → StudentApplication (N) - один студент может иметь много заявок
+/// - Student (1) → Questionnaire (N) - один студент может иметь много анкет
+/// </summary>
 [Table("Student")]
 public class Student
 {
-    // [Key] - указывает, что это первичный ключ
     [Key]
-    // [DatabaseGenerated(DatabaseGeneratedOption.Identity)] - значение генерируется БД автоматически
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int IdStudent { get; set; }  // Уникальный идентификатор студента
+    public int IdStudent { get; set; }
 
-    // [Required] - поле обязательно для заполнения
+    // ФИО
     [Required]
-    [MaxLength(255)]  // Максимальная длина строки
-    public string Surname { get; set; } = string.Empty;  // Фамилия (по умолчанию пустая строка)
+    [MaxLength(255)]
+    public string Surname { get; set; } = string.Empty;
 
     [Required]
     [MaxLength(255)]
-    public string Name { get; set; } = string.Empty;  // Имя
+    public string Name { get; set; } = string.Empty;
 
     [MaxLength(255)]
-    public string? Patronymic { get; set; }  // Отчество (может быть null, т.к. не у всех есть)
+    public string? Patronymic { get; set; }
 
-
+    // Дата рождения
     [Required]
-    // Указываем PostgreSQL, что это просто timestamp без часового пояса
     [Column(TypeName = "timestamp without time zone")]
     public DateTime Birthdate { get; set; }
 
-    //[Required]
-    //public DateTime Birthdate { get; set; }  // Дата рождения
+    // Учетные данные
+    [Required]
+    [MaxLength(255)]
+    public string Login { get; set; } = string.Empty;
 
     [Required]
     [MaxLength(255)]
-    public string Login { get; set; } = string.Empty;  // Логин для входа
+    public string PasswordHash { get; set; } = string.Empty;
 
+    // Контакты
     [Required]
     [MaxLength(255)]
-    public string PasswordHash { get; set; } = string.Empty;  // Хэш пароля (храним не сам пароль, а его хэш)
-
-    [Required]
-    [MaxLength(255)]
-    [EmailAddress]  // Проверяет, что строка похожа на email
+    [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
     [Required]
     [MaxLength(255)]
-    [Phone]  // Проверяет, что строка похожа на номер телефона
+    [Phone]
     public string PhoneNumber { get; set; } = string.Empty;
 
-    public bool HadLamaPractice { get; set; } = false;  // Был ли ранее на практике (по умолчанию false)
+    // Флаги
+    public bool HadLamaPractice { get; set; } = false;
+    public bool IsLamaEmployee { get; set; } = false;
 
-    public bool IsLamaEmployee { get; set; } = false;  // Является ли сотрудником (по умолчанию false)
+    // Навигационные свойства
+    public virtual ICollection<StudentApplication> Applications { get; set; } = new List<StudentApplication>();
+    public virtual ICollection<Questionnaire> Questionnaires { get; set; } = new List<Questionnaire>();
+    public virtual ICollection<StudentDocument> Documents { get; set; } = new List<StudentDocument>();
 }

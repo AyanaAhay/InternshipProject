@@ -1,57 +1,111 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using StudentApi.Contracts.Enums;
 
 namespace StudentApi.Models;
 
-// Перечисление статусов заявки студента (на русском)
-public enum StudentApplicationStatus
-{
-    Заявка,                      // Студент создал, но не отправил
-    НаРассмотренииМенеджером,      // Отправлена менеджеру
-    Тестирование,                  // Менеджер назначил тест
-    СобеседованиеСМенеджером,      // Назначено собеседование
-    НаРассмотренииРуководителем,   // Передана руководителю
-    СобеседованиеСРуководителем,   // Собеседование с руководителем
-    ОформлениеДокументов,          // Нужно оформить документы
-    Принят,                        // Принят на практику
-    Отказано                       // Отказано
-}
-
+/// <summary>
+/// Модель заявки студента на практику
+/// Связи:
+/// - Student (1) → StudentApplication (N) - один студент может иметь много заявок
+/// - Questionnaire (1) → StudentApplication (N) - одна анкета может использоваться в многих заявках
+/// </summary>
 [Table("StudentApplication")]
 public class StudentApplication
 {
+    /// <summary>
+    /// Уникальный идентификатор заявки (первичный ключ)
+    /// Генерируется автоматически базой данных
+    /// </summary>
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-    public int IdStudentApplication { get; set; }  // Уникальный ID заявки
+    public int IdStudentApplication { get; set; }
 
+    /// <summary>
+    /// Внешний ключ на таблицу Student
+    /// Указывает, какому студенту принадлежит заявка
+    /// </summary>
     [Required]
-    public int IdStudent { get; set; }  // ID студента (внешний ключ)
+    public int IdStudent { get; set; }
 
-    // [ForeignKey(nameof(IdStudent))] - указываем, что это внешний ключ к таблице Student
+    /// <summary>
+    /// Навигационное свойство для связи со студентом
+    /// Позволяет получить полные данные студента через Include()
+    /// </summary>
     [ForeignKey(nameof(IdStudent))]
-    public virtual Student? Student { get; set; }  // Навигационное свойство (чтобы получить данные студента)
+    public virtual Student? Student { get; set; }
 
-    // Временно поля для ID других сущностей (потом будут получаться из других сервисов)
-    public int? IdScheduledPractice { get; set; }  // ID практики из расписания (пока может быть null)
-    public int? IdPracticeType { get; set; }  // ID типа практики
-    public int? IdSpecialization { get; set; }  // ID специализации
+    /// <summary>
+    /// Внешний ключ на таблицу Questionnaire
+    /// Может быть NULL, если анкета еще не прикреплена
+    /// Одна анкета может быть использована в нескольких заявках
+    /// </summary>
+    public int? IdQuestionnaire { get; set; }
 
+    /// <summary>
+    /// Навигационное свойство для связи с анкетой
+    /// Позволяет получить данные прикрепленной анкеты
+    /// </summary>
+    [ForeignKey(nameof(IdQuestionnaire))]
+    public virtual Questionnaire? Questionnaire { get; set; }
+
+    /// <summary>
+    /// ID запланированной практики из расписания (справочник из Manager API)
+    /// </summary>
+    public int? IdScheduledPractice { get; set; }
+
+    /// <summary>
+    /// ID типа практики (справочник из Manager API)
+    /// Например: "Производственная", "Преддипломная"
+    /// </summary>
+    public int? IdPracticeType { get; set; }
+
+    /// <summary>
+    /// ID специализации (справочник из Manager API)
+    /// Например: "Программирование", "Тестирование"
+    /// </summary>
+    public int? IdSpecialization { get; set; }
+
+    /// <summary>
+    /// Текущий статус заявки
+    /// По умолчанию - Draft (Черновик)
+    /// </summary>
     [Required]
-    public StudentApplicationStatus StudentApplicationStatus { get; set; } = StudentApplicationStatus.Заявка;  // Статус (по умолчанию - Заявка)
+    public StudentApplicationStatus StudentApplicationStatus { get; set; } = StudentApplicationStatus.Draft;
 
+    /// <summary>
+    /// Желаемая дата начала практики
+    /// </summary>
     [Required]
     [Column(TypeName = "timestamp without time zone")]
-    public DateTime StartDate { get; set; }  // Желаемая дата начала практики
+    public DateTime StartDate { get; set; }
 
+    /// <summary>
+    /// Желаемая дата окончания практики
+    /// </summary>
     [Required]
     [Column(TypeName = "timestamp without time zone")]
-    public DateTime EndDate { get; set; }  // Желаемая дата окончания
+    public DateTime EndDate { get; set; }
 
-    // Дата создания заявки (автоматически устанавливается при создании)
+    /// <summary>
+    /// Дата создания заявки
+    /// Автоматически устанавливается при создании
+    /// </summary>
     [Column(TypeName = "timestamp without time zone")]
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-    // Дата обновления заявки
+    /// <summary>
+    /// Дата последнего обновления заявки
+    /// Обновляется при каждом изменении
+    /// </summary>
     [Column(TypeName = "timestamp without time zone")]
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
+    // Комментарий к отказу (от менеджера или руководителя)
+    [Column(TypeName = "text")] 
+    public string? RejectionComment { get; set; }
+
+    public virtual ICollection<StudentDocument> Documents { get; set; } = new List<StudentDocument>();
+    // Навигационное свойство — отзыв (может быть null)
+    public virtual PracticeReview? PracticeReview { get; set; }
 }

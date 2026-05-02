@@ -62,4 +62,11 @@ public class ReferenceController : ControllerBase
             return StatusCode(500, new { message = "Ошибка при получении запланированных практик" });
         }
     }
+
+    // Получить список направлений от менеджера
+    [HttpGet("practiceareas")] 
+    public async Task<IActionResult> GetPracticeAreas([FromServices] ManagerApiClient managerApi) { 
+        var areas = await managerApi.GetPracticeAreasAsync(); 
+        return Ok(areas); 
+    }
 }

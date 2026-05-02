@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudentApi.Data;
 using StudentApi.DTOs;
+using StudentApi.Contracts.DTOs;
 using StudentApi.Models;
 using System.Security.Cryptography;
 using System.Text;

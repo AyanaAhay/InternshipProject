@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<!-- Настройки для NuGet-пакета -->
+		<PackageId>StudentApi.Contracts</PackageId>
+		<Version>1.0.0</Version>
+		<Authors>StudentTeam</Authors>
+		<Description>Контракты (DTO и Enums) системы Студента</Description>
+	</PropertyGroup>
+	<!-- Пакет для атрибутов \[Required\], \[MaxLength\] и т.д. -->
+	<ItemGroup>
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+	</ItemGroup>
+</Project>
