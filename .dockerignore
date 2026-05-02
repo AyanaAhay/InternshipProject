@@ -1,0 +1,25 @@
+# Результаты сборки
+**/bin/
+**/obj/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Загрузки пользователей (не нужны в образе)
+**/uploads/
+
+# Git
+.git
+.gitignore
+
+# Документация и скрипты
+*.md
+*.docx
+*.py
+*.http
+
+# Solution-файлы верхнего уровня (если Dockerfile внутри StudentApi/)
+*.sln
