@@ -1,10 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudentApi.Data;
-using StudentApi.Contracts.Enums;
+using StudentApi.DTOs;
 using StudentApi.Models;
-using StudentApi.Contracts.DTOs;
-using InternshipManager.Api.Contracts.Enums;
-using InternshipManager.Api.Contracts.DTOs.StudentSupervisorApplication;
 
 namespace StudentApi.Services;
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using StudentApi.Contracts.DTOs;
+using StudentApi.DTOs;
+using StudentApi.Models;
 using StudentApi.Services;
 
 namespace StudentApi.Controllers

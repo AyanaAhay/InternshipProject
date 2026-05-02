@@ -1,7 +1,7 @@
-// namespace StudentApi.Models; 
-namespace StudentApi.Contracts.Enums;
-
-// Статусы заявки студента. 
+namespace StudentApi.Models; 
+/// <summary> 
+/// Статусы заявки студента. 
+/// </summary>
 public enum StudentApplicationStatus 
 { 
     Draft, // Черновик — студент создал, но не отправил

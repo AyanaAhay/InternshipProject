@@ -7,18 +7,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="InternshipManager.Api.Contracts" Version="1.6.0" />
-		<PackageReference Include="ManagerService.Contracts" Version="1.0.5" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.5">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="7.2.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\StudentApi.Contracts\StudentApi.Contracts.csproj" />
 	</ItemGroup>
 
 </Project>

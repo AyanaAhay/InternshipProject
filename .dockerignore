@@ -1,47 +1,25 @@
-# ===== Папки сборки .NET (их нет смысла копировать, Docker сам соберёт) =====
+# Результаты сборки
 **/bin/
 **/obj/
 
-# ===== Папки Visual Studio =====
-**/.vs/
-**/.vscode/
-
-# ===== Git =====
-.git/
-.gitignore
-.gitattributes
-
-# ===== Файлы пользователя Visual Studio =====
+# IDE
+.vs/
+.vscode/
 *.user
 *.suo
-*.userosscache
-*.sln.docstates
 
-# ===== Документация и вспомогательные файлы =====
-*.md
-*.http
-*.txt
-*.docx
-*.pdf
-
-# ===== Загруженные студентами файлы (большой объём, не нужен при сборке) =====
+# Загрузки пользователей (не нужны в образе)
 **/uploads/
 
-# ===== Фронтенд (не нужен для бэкенда) =====
-studentfront/
+# Git
+.git
+.gitignore
 
-# ===== Логи =====
-*.log
-**/logs/
+# Документация и скрипты
+*.md
+*.docx
+*.py
+*.http
 
-# ===== Временные файлы =====
-*.tmp
-*.temp
-
-# ===== НЕ ИГНОРИРОВАТЬ (важно для сборки!) =====
-# Разрешаем папку packages с NuGet пакетами
-!packages/
-!packages/*.nupkg
-
-# Разрешаем nuget.config
-!nuget.config
+# Solution-файлы верхнего уровня (если Dockerfile внутри StudentApi/)
+*.sln

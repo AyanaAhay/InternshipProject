@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 namespace StudentApi.DTOs;
 
 public class PracticeTypeDto
@@ -21,4 +22,12 @@ public class ScheduledPracticeDto
     public DateTime EndDate { get; set; }
     public SpecializationDto? Specialization { get; set; }
     public PracticeTypeDto? PracticeType { get; set; }
+}
+
+// НОВОЕ - получает направления от менеджера
+public class PracticeAreaDto {
+    // Говорим десериализатору искать поле "idPracticeArea" в JSON от менеджера
+    [JsonPropertyName("idPracticeArea")]
+    public int Id { get; set; } 
+    public string Name { get; set; } = string.Empty; 
 }

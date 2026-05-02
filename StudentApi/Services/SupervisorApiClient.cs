@@ -1,11 +1,6 @@
 using System.Text;
 using System.Text.Json;
-using InternshipManager.Api.Contracts.Enums;
-using InternshipManager.Api.Contracts.DTOs.SupervisorApplication;
-using InternshipManager.Api.Contracts.DTOs.StudentSupervisorApplication;
-using InternshipManager.Api.Contracts.DTOs.InterviewSlot;
-using InternshipManager.Api.Contracts.DTOs.Interview;
-using StudentApi.Contracts.DTOs;
+using StudentApi.DTOs;
 
 namespace StudentApi.Services;
 

@@ -1,10 +1,10 @@
 using System.ComponentModel.DataAnnotations;
-using StudentApi.Contracts.Enums;
 
-//namespace StudentApi.DTOs;
-namespace StudentApi.Contracts.DTOs
+namespace StudentApi.DTOs
 {
-    // Создание отзыва о практике
+    /// <summary>
+    /// Создание отзыва о практике
+    /// </summary>
     public class CreatePracticeReviewDto
     {
         [Required]
@@ -25,7 +25,9 @@ namespace StudentApi.Contracts.DTOs
         public int OverallScore { get; set; }
     }
 
-    // Обновление отзыва
+    /// <summary>
+    /// Обновление отзыва
+    /// </summary>
     public class UpdatePracticeReviewDto
     {
         public string? Comment { get; set; }
@@ -44,7 +46,9 @@ namespace StudentApi.Contracts.DTOs
         public int OverallScore { get; set; }
     }
 
-    // Ответ с данными отзыва
+    /// <summary>
+    /// Ответ с данными отзыва
+    /// </summary>
     public class PracticeReviewResponseDto
     {
         public int IdPracticeReview { get; set; }

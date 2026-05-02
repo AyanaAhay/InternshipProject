@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using StudentApi.Data;
-using StudentApi.Contracts.DTOs;
+using StudentApi.DTOs;
 using StudentApi.Models;
 
 namespace StudentApi.Services;

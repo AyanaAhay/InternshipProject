@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using StudentApi.DTOs;
-using StudentApi.Contracts.DTOs;
-using StudentApi.Contracts.Enums;
 using StudentApi.Services;
 
 namespace StudentApi.Controllers;
 
+using StudentApi.Models;
 
 [ApiController]
 [Route("api/v1/[controller]")]

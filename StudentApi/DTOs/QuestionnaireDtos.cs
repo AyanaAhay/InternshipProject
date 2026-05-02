@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using StudentApi.Contracts.Enums;
 
-namespace StudentApi.Contracts.DTOs;
+namespace StudentApi.DTOs;
 
 public class CreateQuestionnaireDto
 {

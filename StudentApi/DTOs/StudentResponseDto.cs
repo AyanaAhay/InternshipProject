@@ -1,4 +1,4 @@
-namespace StudentApi.Contracts.DTOs;
+namespace StudentApi.DTOs;
 
 // DTO для ответа с данными студента (без пароля)
 public class StudentResponseDto

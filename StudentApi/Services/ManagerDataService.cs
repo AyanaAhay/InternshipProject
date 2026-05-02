@@ -1,14 +1,12 @@
-using ManagerService.Contracts.DTOs;
-using ManagerService.Contracts.Enums;
-using StudentApi.Contracts.DTOs;
+using StudentApi.DTOs;
 
 namespace StudentApi.Services;
 
 public class ManagerDataService
 {
     private readonly ManagerApiClient _apiClient;
-    private List<PracticeTypeDTO>? _cachedPracticeTypes;
-    private List<SpecializationDTO>? _cachedSpecializations;
+    private List<PracticeTypeDto>? _cachedPracticeTypes;
+    private List<SpecializationDto>? _cachedSpecializations;
     private DateTime _cacheExpiration = DateTime.MinValue;
     private readonly TimeSpan _cacheLifetime = TimeSpan.FromMinutes(5);
 
@@ -19,7 +17,7 @@ public class ManagerDataService
 
     private bool IsCacheValid => DateTime.Now < _cacheExpiration;
 
-    public async Task<List<PracticeTypeDTO>> GetPracticeTypesAsync(bool useCache = true)
+    public async Task<List<PracticeTypeDto>> GetPracticeTypesAsync(bool useCache = true)
     {
         if (useCache && IsCacheValid && _cachedPracticeTypes != null)
             return _cachedPracticeTypes;
@@ -29,7 +27,7 @@ public class ManagerDataService
         return _cachedPracticeTypes;
     }
 
-    public async Task<List<SpecializationDTO>> GetSpecializationsAsync(bool useCache = true)
+    public async Task<List<SpecializationDto>> GetSpecializationsAsync(bool useCache = true)
     {
         if (useCache && IsCacheValid && _cachedSpecializations != null)
             return _cachedSpecializations;
@@ -39,7 +37,7 @@ public class ManagerDataService
         return _cachedSpecializations;
     }
 
-    public async Task<List<ScheduledPracticeDTO>> GetScheduledPracticesAsync(
+    public async Task<List<ScheduledPracticeDto>> GetScheduledPracticesAsync(
         int? practiceTypeId = null,
         int? specializationId = null)
     {

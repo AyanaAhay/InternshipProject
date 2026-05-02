@@ -1,9 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudentApi.Data;
-using StudentApi.Contracts.DTOs;
+using StudentApi.DTOs;
 using StudentApi.Models;
-//using StudentApi.DTOs;
-using StudentApi.Contracts.Enums;
 
 namespace StudentApi.Services
 {

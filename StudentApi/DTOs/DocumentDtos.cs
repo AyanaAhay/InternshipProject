@@ -1,8 +1,6 @@
-//using StudentApi.Models;
-using StudentApi.Contracts.Enums;
+using StudentApi.Models;
 
-//namespace StudentApi.DTOs;
-namespace StudentApi.Contracts.DTOs;
+namespace StudentApi.DTOs;
 
 // ========== Заглушка: тип документа ==========
 public class DocumentTypeDto

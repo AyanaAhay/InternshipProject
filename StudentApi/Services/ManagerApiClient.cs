@@ -1,10 +1,7 @@
 using System.Text;
 using System.Text.Json;
-using ManagerService.Contracts.DTOs;
-using ManagerService.Contracts.Enums;
-using StudentApi.Models;
-using StudentApi.Contracts.DTOs;
 using StudentApi.DTOs;
+using StudentApi.Models;
 
 namespace StudentApi.Services;
 
@@ -26,7 +23,7 @@ public class ManagerApiClient
     }
 
     // Получение типов практик
-    public async Task<List<PracticeTypeDTO>> GetPracticeTypesAsync()
+    public async Task<List<PracticeTypeDto>> GetPracticeTypesAsync()
     {
         try
         {
@@ -36,22 +33,22 @@ public class ManagerApiClient
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogWarning($"Manager API returned {response.StatusCode} for PracticeTypes");
-                return new List<PracticeTypeDTO>();
+                return new List<PracticeTypeDto>();
             }
 
             var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<List<PracticeTypeDTO>>(json, _jsonOptions);
-            return result ?? new List<PracticeTypeDTO>();
+            var result = JsonSerializer.Deserialize<List<PracticeTypeDto>>(json, _jsonOptions);
+            return result ?? new List<PracticeTypeDto>();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ошибка при получении типов практик из Manager API");
-            return new List<PracticeTypeDTO>();
+            return new List<PracticeTypeDto>();
         }
     }
 
     // Получение специализаций
-    public async Task<List<SpecializationDTO>> GetSpecializationsAsync()
+    public async Task<List<SpecializationDto>> GetSpecializationsAsync()
     {
         try
         {
@@ -61,22 +58,22 @@ public class ManagerApiClient
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogWarning($"Manager API returned {response.StatusCode} for Specializations");
-                return new List<SpecializationDTO>();
+                return new List<SpecializationDto>();
             }
 
             var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<List<SpecializationDTO>>(json, _jsonOptions);
-            return result ?? new List<SpecializationDTO>();
+            var result = JsonSerializer.Deserialize<List<SpecializationDto>>(json, _jsonOptions);
+            return result ?? new List<SpecializationDto>();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ошибка при получении специализаций из Manager API");
-            return new List<SpecializationDTO>();
+            return new List<SpecializationDto>();
         }
     }
 
     // Получение запланированных практик
-    public async Task<List<ScheduledPracticeDTO>> GetScheduledPracticesAsync(
+    public async Task<List<ScheduledPracticeDto>> GetScheduledPracticesAsync(
         int? practiceTypeId = null,
         int? specializationId = null)
     {
@@ -99,17 +96,17 @@ public class ManagerApiClient
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogWarning($"Manager API returned {response.StatusCode} for ScheduledPractices");
-                return new List<ScheduledPracticeDTO>();
+                return new List<ScheduledPracticeDto>();
             }
 
             var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<List<ScheduledPracticeDTO>>(json, _jsonOptions);
-            return result ?? new List<ScheduledPracticeDTO>();
+            var result = JsonSerializer.Deserialize<List<ScheduledPracticeDto>>(json, _jsonOptions);
+            return result ?? new List<ScheduledPracticeDto>();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Ошибка при получении запланированных практик из Manager API");
-            return new List<ScheduledPracticeDTO>();
+            return new List<ScheduledPracticeDto>();
         }
     }
 
@@ -118,7 +115,7 @@ public class ManagerApiClient
     {
         try
         {
-            // Создаем Dto для отправки менеджеру
+            // Создаем DTO для отправки менеджеру
             var applicationDto = new
             {
                 studentId = student.IdStudent,
@@ -207,7 +204,7 @@ public class ManagerApiClient
 
     // Получить свободные слоты менеджера
     // GET /api/v1/ManagerSlot/getFreeSlots
-    public async Task<List<ManagerSlotDTO>> GetFreeManagerSlotsAsync()
+    public async Task<List<ManagerSlotDto>> GetFreeManagerSlotsAsync()
     {
         try
         {
@@ -217,28 +214,28 @@ public class ManagerApiClient
             if (!response.IsSuccessStatusCode)
             {
                 _logger.LogWarning("Manager API returned {Status} for free slots", response.StatusCode);
-                return new List<ManagerSlotDTO>();
+                return new List<ManagerSlotDto>();
             }
 
             var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<List<ManagerSlotDTO>>(json, _jsonOptions);
+            var result = JsonSerializer.Deserialize<List<ManagerSlotDto>>(json, _jsonOptions);
 
-            return result ?? new List<ManagerSlotDTO>();
+            return result ?? new List<ManagerSlotDto>();
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error getting free manager slots");
-            return new List<ManagerSlotDTO>();
+            return new List<ManagerSlotDto>();
         }
     }
 
     // Записаться на собеседование с менеджером
     // POST /api/v1/ManagerInterview/signUpStudentForInterview
-    public async Task<bool> SignUpForManagerInterviewAsync(SignUpForManagerInterviewDto Dto)
+    public async Task<bool> SignUpForManagerInterviewAsync(SignUpForManagerInterviewDto dto)
     {
         try
         {
-            var json = JsonSerializer.Serialize(Dto, _jsonOptions);
+            var json = JsonSerializer.Serialize(dto, _jsonOptions);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync(
@@ -248,8 +245,8 @@ public class ManagerApiClient
             {
                 _logger.LogInformation(
                     "Student {StudentId} signed up for manager interview slot {SlotId}",
-                    Dto.IdStudent,
-                    Dto.IdSlot);
+                    dto.IdStudent,
+                    dto.IdSlot);
 
                 return true;
             }
@@ -355,11 +352,11 @@ public class ManagerApiClient
     // Записаться на собеседование с менеджером
     // POST /api/v1/ManagerInterview/Create
     public async Task<ManagerInterviewResponseDto?> CreateManagerInterviewAsync(
-        CreateManagerInterviewDto Dto)
+        CreateManagerInterviewDto dto)
     {
         try
         {
-            var json = JsonSerializer.Serialize(Dto, _jsonOptions);
+            var json = JsonSerializer.Serialize(dto, _jsonOptions);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await _httpClient.PostAsync("api/v1/ManagerInterview/Create", content);
@@ -408,14 +405,14 @@ public class ManagerApiClient
 
     // Получить список направлений от менеджера
     // GET /api/v1/PracticeArea/GetAll
-    public async Task<List<PracticeAreaDTO>> GetPracticeAreasAsync() { 
+    public async Task<List<PracticeAreaDto>> GetPracticeAreasAsync() { 
         try { 
             var response = await _httpClient.GetAsync("api/v1/PracticeArea/GetAll"); 
-            if (!response.IsSuccessStatusCode) return new List<PracticeAreaDTO>(); 
+            if (!response.IsSuccessStatusCode) return new List<PracticeAreaDto>(); 
             var json = await response.Content.ReadAsStringAsync(); 
-            return JsonSerializer.Deserialize<List<PracticeAreaDTO>>(json, _jsonOptions) ?? new List<PracticeAreaDTO>(); 
+            return JsonSerializer.Deserialize<List<PracticeAreaDto>>(json, _jsonOptions) ?? new List<PracticeAreaDto>(); 
         } catch { 
-            return new List<PracticeAreaDTO>(); 
+            return new List<PracticeAreaDto>(); 
         }
     }
 }

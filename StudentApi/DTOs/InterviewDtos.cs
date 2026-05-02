@@ -1,4 +1,4 @@
-namespace StudentApi.Contracts.DTOs;
+namespace StudentApi.DTOs;
 
 // Связка студент ↔ руководитель (расширенный ответ от руководителя)
 public class StudentSupervisorLinkDetailDto
@@ -131,13 +131,12 @@ public class ChooseSupervisorDto
 }
 
 // Информация о руководителе внутри связки
-public class SupervisorInfoDto
-{
-    public int IdEmployee { get; set; }
-    public string? FullName { get; set; }
-    public string? Specialization { get; set; }
-    public string? Department { get; set; }
-    public string? Address { get; set; }
+public class SupervisorInfoDto { 
+    public int IdEmployee { get; set; } 
+    public string? FullName { get; set; } 
+    public string? Specialization { get; set; } 
+    public string? Department { get; set; } 
+    public string? Address { get; set; } 
 }
 
 

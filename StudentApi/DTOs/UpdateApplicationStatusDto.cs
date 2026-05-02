@@ -1,12 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using StudentApi.Models;
 
-//using StudentApi.Models;
-using StudentApi.Contracts.Enums;
+namespace StudentApi.DTOs;
 
-//namespace StudentApi.DTOs;
-namespace StudentApi.Contracts.DTOs;
-
-// DTO для изменения статуса заявки внешними системами
+/// <summary>
+/// DTO для изменения статуса заявки внешними системами
+/// (менеджер, руководитель)
+/// </summary>
 public class UpdateApplicationStatusDto
 {
     [Required]
